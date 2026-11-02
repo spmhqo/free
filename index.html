@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Free Writing - (speak your mind)</title>
+  <link rel="icon" href="spm.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&family=Source+Code+Pro:wght@400;600&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-gradient-start: #020617;
+      --bg-gradient-end: #0f172a;
+      --card-bg: rgba(30, 41, 59, 0.4);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --text-primary: #f8fafc;
+      --text-secondary: #94a3b8;
+      --accent-primary: #22d3ee;
+      --accent-hover: #67e8f9;
+      --accent-success: #10b981;
+      --accent-danger: #f43f5e;
+      --code-bg: rgba(0, 0, 0, 0.3);
+      --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
+      color: var(--text-primary);
+      line-height: 1.6;
+      padding: 60px 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container {
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 35px;
+    }
+
+    h1 {
+      font-size: 2.8rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .sub-header {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--accent-primary);
+      letter-spacing: 0.02em;
+    }
+
+    /* Dual Navigations */
+    .nav-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 22px;
+      margin-bottom: 30px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav-group:not(:last-child) {
+      padding-bottom: 16px;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    .nav-label {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--accent-primary);
+    }
+
+    .nav-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      color: #e2e8f0;
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .nav-btn:hover {
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+
+    /* Filter & Reset Bar */
+    .filter-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 35px;
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      backdrop-filter: blur(12px);
+      scroll-margin-top: 30px;
+    }
+
+    .single-input {
+      flex: 1;
+      background: var(--code-bg);
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .single-input:focus {
+      border-color: var(--accent-primary);
+    }
+
+    .reset-btn {
+      background: rgba(244, 63, 94, 0.1);
+      color: var(--accent-danger);
+      border: 1px solid var(--accent-danger);
+      padding: 12px 22px;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .reset-btn:hover {
+      background: var(--accent-danger);
+      color: #fff;
+    }
+
+    /* Prompts Workflow */
+    .prompt-workflow {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .step-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 30px;
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(12px);
+      transition: transform 0.2s ease;
+      scroll-margin-top: 30px;
+    }
+
+    .step-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .step-label {
+      font-weight: 800;
+      font-size: 0.8rem;
+      background: var(--accent-primary);
+      color: #020617;
+      padding: 5px 16px;
+      border-radius: 6px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .prompt-content {
+      background: var(--code-bg);
+      padding: 22px;
+      border-radius: 12px;
+      font-family: 'Source Code Pro', monospace;
+      font-size: 0.95rem;
+      color: #cbd5e1;
+      white-space: pre-wrap;
+      border: 1px solid rgba(255,255,255,0.05);
+      margin-bottom: 20px;
+      line-height: 1.6;
+      word-break: break-all;
+      overflow-wrap: anywhere;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+
+    .prompt-content::-webkit-scrollbar { width: 8px; }
+    .prompt-content::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+    .prompt-content::-webkit-scrollbar-thumb { background: var(--card-border); border-radius: 4px; }
+
+    .btn-group {
+      display: flex;
+      gap: 15px;
+      width: 100%;
+    }
+
+    .btn {
+      padding: 13px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: all 0.2s;
+      flex: 1;
+      text-decoration: none;
+      border: none;
+    }
+
+    .copy-btn {
+      background: rgba(34, 211, 238, 0.1);
+      color: var(--accent-primary);
+      border: 1px solid var(--accent-primary);
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-primary);
+      color: #020617;
+    }
+
+    .copy-btn.copied {
+      background: var(--accent-success);
+      border-color: var(--accent-success);
+      color: white;
+    }
+
+    .link-btn {
+      background: rgba(16, 185, 129, 0.1);
+      color: var(--accent-success);
+      border: 1px solid var(--accent-success);
+    }
+
+    .link-btn:hover {
+      background: var(--accent-success);
+      color: #020617;
+    }
+
+    .footer {
+      margin-top: 80px;
+      text-align: center;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--card-border);
+      padding-top: 40px;
+      width: 100%;
+      padding-bottom: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 { font-size: 2rem; }
+      .sub-header { font-size: 1rem; }
+      .step-card { padding: 20px; }
+      .prompt-content { font-size: 0.85rem; }
+      .filter-wrapper { flex-direction: column; }
+      .reset-btn { width: 100%; }
+      .btn-group { flex-direction: column; }
+      .nav-links { flex-direction: column; }
+      .nav-btn { width: 100%; justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Free Writing</h1>
+      <p class="sub-header">(speak your mind)</p>
+    </header>
+
+    <!-- 2 Dedicated Navigations (Inputs & Prompts using their names) -->
+    <div class="nav-wrapper">
+      <nav class="nav-group" aria-label="Input Fields Navigation">
+        <span class="nav-label">Input Fields Navigation</span>
+        <div class="nav-links">
+          <a href="#promptSearchWrapper" class="nav-btn" onclick="document.getElementById('promptSearch').focus();">Search & Filter</a>
+        </div>
+      </nav>
+
+      <nav class="nav-group" aria-label="Prompts Navigation">
+        <span class="nav-label">Prompts Navigation</span>
+        <div class="nav-links" id="promptsNavLinks">
+          <!-- Injected dynamically by JavaScript using prompt names -->
+        </div>
+      </nav>
+    </div>
+
+    <!-- Filter input field with Reset button -->
+    <div class="filter-wrapper" id="promptSearchWrapper">
+      <input 
+        type="text" 
+        id="promptSearch" 
+        class="single-input" 
+        placeholder="Search or filter prompts by name or URL..." 
+        oninput="filterPrompts(this.value)" 
+      />
+      <button type="button" class="reset-btn" onclick="resetInputField('promptSearch')">
+        Reset
+      </button>
+    </div>
+
+    <!-- Prompts Container -->
+    <div class="prompt-workflow" id="promptsContainer">
+      <!-- Injected by JavaScript -->
+    </div>
+
+    <footer class="footer">
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <script>
+    const promptsData = [
+      {
+        id: 1,
+        name: "My 10 Core Points",
+        url: "my-10-core-points.html",
+        text: `my-10-core-points.html`
+      },
+      {
+        id: 2,
+        name: "Translate",
+        url: "translate-pgp-bangla-post.html",
+        text: `translate-pgp-bangla-post.html`
+      },
+      {
+        id: 3,
+        name: "Image set",
+        url: "image-set-genie.html",
+        text: `image-set-genie.html`
+      },
+      {
+        id: 4,
+        name: "Five Line Selling",
+        url: "five-line-selling.html",
+        text: `five-line-selling.html`
+      },
+      {
+        id: 5,
+        name: "CTA for Five Line Selling",
+        url: "cta-5-line-ad.html",
+        text: `cta-5-line-ad.html`
+      },
+      {
+        id: 6,
+        name: "Content Provided for Five Line Selling",
+        url: "content-provided-for-5-line-selling.html",
+        text: `content-provided-for-5-line-selling.html`
+      }
+    ];
+
+    function renderNavigation() {
+      const navContainer = document.getElementById('promptsNavLinks');
+      navContainer.innerHTML = '';
+
+      promptsData.forEach(p => {
+        const link = document.createElement('a');
+        link.className = 'nav-btn';
+        link.href = `#card-${p.id}`;
+        link.innerText = p.name;
+        navContainer.appendChild(link);
+      });
+    }
+
+    function renderPrompts() {
+      const container = document.getElementById('promptsContainer');
+      container.innerHTML = '';
+
+      promptsData.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'step-card';
+        card.id = `card-${p.id}`;
+        card.setAttribute('data-name', p.name.toLowerCase());
+        card.setAttribute('data-text', p.text.toLowerCase());
+
+        card.innerHTML = `
+          <div class="step-header">
+            <span class="step-label">${p.name}</span>
+          </div>
+          <div class="prompt-content" id="p${p.id}">${p.text}</div>
+          <div class="btn-group">
+            <button class="btn copy-btn" onclick="copyText('p${p.id}', this)">
+              <span>Copy Prompt</span>
+            </button>
+            <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn link-btn">
+              <span>Open Link</span>
+            </a>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    function copyText(id, btn) {
+      const element = document.getElementById(id);
+      if (!element) return;
+      const text = element.innerText;
+
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      }).catch(() => {
+        // Fallback for older browsers
+        const textarea = document.createElement('textarea');
+        textarea.value = text;
+        document.body.appendChild(textarea);
+        textarea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textarea);
+
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<span>Copied to Clipboard!</span>`;
+        btn.classList.add('copied');
+
+        setTimeout(() => {
+          btn.innerHTML = originalText;
+          btn.classList.remove('copied');
+        }, 2000);
+      });
+    }
+
+    function filterPrompts(query) {
+      const q = query.toLowerCase().trim();
+      promptsData.forEach(p => {
+        const card = document.getElementById(`card-${p.id}`);
+        if (card) {
+          const matches = !q || p.name.toLowerCase().includes(q) || p.text.toLowerCase().includes(q);
+          card.style.display = matches ? 'block' : 'none';
+        }
+      });
+    }
+
+    // Reset button clears input field and refreshes prompt boxes without changing prompt text
+    function resetInputField(fieldId) {
+      const field = document.getElementById(fieldId);
+      if (field) {
+        field.value = '';
+      }
+      filterPrompts('');
+    }
+
+    window.onload = () => {
+      renderNavigation();
+      renderPrompts();
+    };
+  </script>
+</body>
+</html>
