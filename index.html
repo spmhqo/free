@@ -27,6 +27,10 @@
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       font-family: 'Inter', sans-serif;
       background: fixed linear-gradient(135deg, var(--bg-gradient-start), var(--bg-gradient-end));
@@ -47,7 +51,7 @@
 
     header {
       text-align: center;
-      margin-bottom: 40px;
+      margin-bottom: 35px;
     }
 
     h1 {
@@ -65,6 +69,52 @@
       letter-spacing: 0.02em;
     }
 
+    /* Navigation Sections */
+    .nav-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 16px 20px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(12px);
+    }
+
+    .nav-title {
+      font-size: 0.8rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--accent-primary);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .nav-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .nav-pill-btn {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text-primary);
+      padding: 7px 14px;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-pill-btn:hover {
+      background: rgba(34, 211, 238, 0.15);
+      border-color: var(--accent-primary);
+      color: var(--accent-primary);
+      transform: translateY(-1px);
+    }
+
     /* Filter & Reset Bar */
     .filter-wrapper {
       background: var(--card-bg);
@@ -72,10 +122,23 @@
       border-radius: 16px;
       padding: 16px 20px;
       margin-bottom: 35px;
+      backdrop-filter: blur(12px);
+    }
+
+    .filter-label {
+      display: block;
+      color: var(--accent-primary);
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    .input-row {
       display: flex;
       gap: 12px;
       align-items: center;
-      backdrop-filter: blur(12px);
     }
 
     .single-input {
@@ -112,6 +175,7 @@
       color: #fff;
     }
 
+    /* Prompt Cards */
     .prompt-workflow {
       display: flex;
       flex-direction: column;
@@ -125,6 +189,7 @@
       padding: 30px;
       box-shadow: var(--shadow);
       backdrop-filter: blur(12px);
+      scroll-margin-top: 30px;
       transition: transform 0.2s ease;
     }
 
@@ -137,7 +202,7 @@
 
     .step-label {
       font-weight: 800;
-      font-size: 0.8rem;
+      font-size: 0.82rem;
       background: var(--accent-primary);
       color: #020617;
       padding: 5px 16px;
@@ -233,7 +298,7 @@
       .sub-header { font-size: 1rem; }
       .step-card { padding: 20px; }
       .prompt-content { font-size: 0.85rem; }
-      .filter-wrapper { flex-direction: column; }
+      .input-row { flex-direction: column; }
       .reset-btn { width: 100%; }
       .btn-group { flex-direction: column; }
     }
@@ -247,18 +312,37 @@
       <p class="sub-header">(speak your mind)</p>
     </header>
 
-    <!-- Filter input field with Reset button -->
-    <div class="filter-wrapper">
-      <input 
-        type="text" 
-        id="promptSearch" 
-        class="single-input" 
-        placeholder="Search or filter prompts by title or URL..." 
-        oninput="filterPrompts(this.value)" 
-      />
-      <button type="button" class="reset-btn" onclick="resetInputField('promptSearch')">
-        Reset
-      </button>
+    <!-- Navigation 1: For Input Fields (by Name) -->
+    <nav class="nav-wrapper" aria-label="Input Fields Navigation">
+      <span class="nav-title">Input Fields Navigation</span>
+      <div class="nav-pills">
+        <a href="#promptSearchWrapper" class="nav-pill-btn">Search &amp; Filter Input</a>
+      </div>
+    </nav>
+
+    <!-- Navigation 2: For Prompts (by Name) -->
+    <nav class="nav-wrapper" aria-label="Prompts Navigation">
+      <span class="nav-title">Prompts Navigation</span>
+      <div class="nav-pills" id="promptsNav">
+        <!-- Injected via JavaScript using prompt names -->
+      </div>
+    </nav>
+
+    <!-- Single Input Field with its own Reset Button -->
+    <div class="filter-wrapper" id="promptSearchWrapper">
+      <label for="promptSearch" class="filter-label">Search &amp; Filter Prompts</label>
+      <div class="input-row">
+        <input 
+          type="text" 
+          id="promptSearch" 
+          class="single-input" 
+          placeholder="Type to filter prompts by name or text..." 
+          oninput="filterPrompts(this.value)" 
+        />
+        <button type="button" class="reset-btn" onclick="resetInputField('promptSearch')">
+          Reset
+        </button>
+      </div>
     </div>
 
     <!-- Prompts Container -->
@@ -267,7 +351,7 @@
     </div>
 
     <footer class="footer">
-      <p>Copyright © <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
+      <p>Copyright &copy; <script>document.write(new Date().getFullYear())</script> Siva Prasad Mukherjee. All Rights Reserved.</p>
     </footer>
   </div>
 
@@ -276,52 +360,70 @@
       {
         id: 1,
         name: "My 10 Core Points",
-        url: "my-10-core-points.html",
-        text: `my-10-core-points.html`
+        text: `my-10-core-points.html`,
+        url: "my-10-core-points.html"
       },
       {
         id: 2,
-        name: "Translate",
-        url: "translate-pgp-bangla-post.html",
-        text: `translate-pgp-bangla-post.html`
+        name: "PWPS",
+        text: `pwps.html`,
+        url: "pwps.html"
       },
       {
         id: 3,
-        name: "Image set",
-        url: "image-set-genie.html",
-        text: `image-set-genie.html`
+        name: "Translate",
+        text: `translate-pgp-bangla-post.html`,
+        url: "translate-pgp-bangla-post.html"
       },
       {
         id: 4,
-        name: "Five Line Selling",
-        url: "five-line-selling.html",
-        text: `five-line-selling.html`
+        name: "Image set",
+        text: `image-set-genie.html`,
+        url: "image-set-genie.html"
       },
       {
         id: 5,
-        name: "CTA for Five Line Selling",
-        url: "cta-5-line-ad.html",
-        text: `cta-5-line-ad.html`
+        name: "Five Line Selling",
+        text: `five-line-selling.html`,
+        url: "five-line-selling.html"
       },
       {
         id: 6,
-        name: "Content Provided for Five Line Selling",
-        url: "content-provided-for-5-line-selling.html",
-        text: `content-provided-for-5-line-selling.html`
+        name: "CTA for Five Line Selling",
+        text: `cta-5-line-ad.html`,
+        url: "cta-5-line-ad.html"
       },
       {
         id: 7,
-        name: "Focus Point",
-        url: "focus-point.html",
-        text: `focus-point.html`
+        name: "Content Provided for Five Line Selling",
+        text: `content-provided-for-5-line-selling.html`,
+        url: "content-provided-for-5-line-selling.html"
       },
       {
         id: 8,
-        name: "Ice Cold Traffic",
-        url: "ict.html",
-        text: `ict.html`
+        name: "Focus Point",
+        text: `focus-point.html`,
+        url: "focus-point.html"
+      },
+      {
+        id: 9,
+        name: "Focus Point",
+        text: `ict.html`,
+        url: "ict.html"
       }
     ];
+
+    function renderPromptsNav() {
+      const navContainer = document.getElementById('promptsNav');
+      navContainer.innerHTML = '';
+      promptsData.forEach(p => {
+        const link = document.createElement('a');
+        link.className = 'nav-pill-btn';
+        link.href = `#card-${p.id}`;
+        link.innerText = p.name;
+        navContainer.appendChild(link);
+      });
+    }
 
     function renderPrompts() {
       const container = document.getElementById('promptsContainer');
@@ -340,7 +442,7 @@
           </div>
           <div class="prompt-content" id="p${p.id}">${p.text}</div>
           <div class="btn-group">
-            <button class="btn copy-btn" onclick="copyText('p${p.id}', this)">
+            <button type="button" class="btn copy-btn" onclick="copyText('p${p.id}', this)">
               <span>Copy Prompt</span>
             </button>
             <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="btn link-btn">
@@ -367,7 +469,6 @@
           btn.classList.remove('copied');
         }, 2000);
       }).catch(() => {
-        // Fallback for older browsers
         const textarea = document.createElement('textarea');
         textarea.value = text;
         document.body.appendChild(textarea);
@@ -397,7 +498,6 @@
       });
     }
 
-    // Reset button clears input field and restores all prompt cards
     function resetInputField(fieldId) {
       const field = document.getElementById(fieldId);
       if (field) {
@@ -407,6 +507,7 @@
     }
 
     window.onload = () => {
+      renderPromptsNav();
       renderPrompts();
     };
   </script>
